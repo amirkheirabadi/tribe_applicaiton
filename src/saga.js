@@ -48,6 +48,7 @@ export function* postList(action) {
     type: 'FORM_LOADING',
     payload: false,
   });
+
   yield put({
     type: 'POST_LIST_SUCCESS',
     payload: response.data,
@@ -91,20 +92,16 @@ export function* postCreate(action) {
 
 export function* postDelete(action) {
   yield put({
-    type: 'FORM_LOADING',
+    type: 'LIST_LOADING',
     payload: true,
   });
-  const response = yield axiosClient.delete('/' + action.payload.id, {});
-
-  yield call(postList);
+  yield axiosClient.delete('/' + action.payload.id, {});
   yield put({
-    type: 'FORM_LOADING',
+    type: 'LIST_LOADING',
     payload: false,
   });
-  yield put({
-    type: 'POST_DELETE',
-    payload: response.data,
-  });
+  yield call(postList);
+
 }
 
 function* mySaga() {
